@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class EchoServer {
@@ -30,6 +32,7 @@ public class EchoServer {
 
     public static void main(String[] args) throws IOException, InterruptedException{
         EchoServer server = new EchoServer();
+        List<Thread> threads = new ArrayList<>();
         try (ServerSocket ss = new ServerSocket(12345)) {
             System.out.println("Server listening on port 12345...");
 
@@ -39,6 +42,7 @@ public class EchoServer {
 
                 Thread t = new Thread(new ConnectionHandle(server, client));
                 t.start();
+                threads.add(t);
             }
         } catch (IOException e) {
             e.printStackTrace();
